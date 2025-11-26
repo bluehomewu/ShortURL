@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { dbService } from '../services/dbService';
-import { generateSmartSlug } from '../services/geminiService';
+import { generateSmartSlug, isAIConfigured } from '../services/geminiService';
 import { ShortLink } from '../types';
-import { STORAGE_KEY_API_KEY, REPO_NAME } from '../constants';
+import { REPO_NAME } from '../constants';
 import { useLanguage } from '../contexts/LanguageContext';
 
-interface UrlShortenerProps {
-  apiKey: string;
-}
-
-const UrlShortener: React.FC<UrlShortenerProps> = ({ apiKey }) => {
+const UrlShortener: React.FC = () => {
   const [url, setUrl] = useState('');
   const [slug, setSlug] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +13,7 @@ const UrlShortener: React.FC<UrlShortenerProps> = ({ apiKey }) => {
   const [history, setHistory] = useState<ShortLink[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const { t } = useLanguage();
+  const aiEnabled = isAIConfigured();
 
   useEffect(() => {
     loadHistory();
@@ -38,10 +35,10 @@ const UrlShortener: React.FC<UrlShortenerProps> = ({ apiKey }) => {
     try {
       let finalSlug = slug.trim();
 
-      // If no custom slug, and API key exists, try AI
-      if (!finalSlug && apiKey) {
+      // If no custom slug, and AI is configured, try AI
+      if (!finalSlug && aiEnabled) {
         try {
-          finalSlug = await generateSmartSlug(url, apiKey);
+          finalSlug = await generateSmartSlug(url);
         } catch (err) {
           console.warn("AI generation failed, falling back to random", err);
         }
@@ -99,7 +96,7 @@ const UrlShortener: React.FC<UrlShortenerProps> = ({ apiKey }) => {
       <div className="bg-slate-800/50 backdrop-blur-md border border-slate-700 rounded-2xl p-6 md:p-10 shadow-xl mb-10">
         <h2 className="text-2xl font-bold mb-2 text-center text-white">{t('shortenTitle')}</h2>
         <p className="text-center text-slate-400 mb-8">
-           {apiKey ? t('shortenDescAI') : t('shortenDescNoAI')}
+           {aiEnabled ? t('shortenDescAI') : t('shortenDescNoAI')}
         </p>
 
         <form onSubmit={handleGenerate} className="space-y-4">
@@ -126,7 +123,7 @@ const UrlShortener: React.FC<UrlShortenerProps> = ({ apiKey }) => {
                 type="text"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
-                placeholder={apiKey ? t('inputSlugPlaceholderAI') : t('inputSlugPlaceholder')}
+                placeholder={aiEnabled ? t('inputSlugPlaceholderAI') : t('inputSlugPlaceholder')}
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl py-4 pl-12 pr-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all"
               />
             </div>

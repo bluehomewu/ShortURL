@@ -1,12 +1,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { DEFAULT_GEMINI_MODEL } from '../constants';
 
-export const generateSmartSlug = async (originalUrl: string, apiKey: string): Promise<string> => {
-  if (!apiKey) {
+const API_KEY = process.env.GEMINI_API_KEY || '';
+
+export const isAIConfigured = (): boolean => {
+  return !!API_KEY;
+};
+
+export const generateSmartSlug = async (originalUrl: string): Promise<string> => {
+  if (!API_KEY) {
     throw new Error("Gemini API Key is missing");
   }
 
-  const ai = new GoogleGenAI({ apiKey });
+  const ai = new GoogleGenAI({ apiKey: API_KEY });
 
   const prompt = `
     Analyze this URL: "${originalUrl}".
