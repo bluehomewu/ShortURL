@@ -7,15 +7,22 @@ service cloud.firestore {
       allow read: if true;
       
       // Allow anyone to create new links
-      // In a production app, you might want to add rate limiting or authentication
+      // Note: In production, consider adding rate limiting or authentication
       allow create: if true;
       
-      // Allow anyone to update links (for click counting)
-      // Only allow updating the 'clicks' field
-      allow update: if true;
+      // Allow anyone to update links, but only the 'clicks' field
+      // This is necessary for incrementing click counts when URLs are accessed
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clicks']);
       
+      // OPTION 1 (RECOMMENDED - More Secure):
+      // Restrict delete access to authenticated users only
+      // Uncomment this line and comment out the line below if you want to add authentication
+      // allow delete: if request.auth != null;
+      
+      // OPTION 2 (Current - Less Secure):
       // Allow anyone to delete links
-      // In a production app, you might want to restrict this to authenticated users
+      // Warning: This allows anyone to delete any shortened URL
+      // Only use this if the app is for personal use and not publicly exposed
       allow delete: if true;
     }
   }
