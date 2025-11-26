@@ -8,7 +8,6 @@ export const APP_DESCRIPTION = 'AI-Powered URL Shortener';
 
 // Placeholder for storage keys
 export const STORAGE_KEY_LINKS = 'gemini_short_links';
-export const STORAGE_KEY_API_KEY = 'gemini_api_key';
 export const STORAGE_KEY_FIREBASE_CONFIG = 'gemini_firebase_config';
 
 export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';

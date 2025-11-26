@@ -2,12 +2,9 @@ import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { isConfigured } from '../firebaseConfig';
 
-interface HeaderProps {
-  apiKey: string;
-  setApiKey: (key: string) => void;
-}
+interface HeaderProps {}
 
-const Header: React.FC<HeaderProps> = ({ apiKey, setApiKey }) => {
+const Header: React.FC<HeaderProps> = () => {
   const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
   const { language, setLanguage, t } = useLanguage();
   
@@ -60,24 +57,7 @@ const Header: React.FC<HeaderProps> = ({ apiKey, setApiKey }) => {
               <div className="absolute right-0 mt-2 w-80 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-4 animate-in fade-in slide-in-from-top-2 z-50">
                 <h3 className="text-sm font-semibold text-slate-300 mb-3 uppercase tracking-wider border-b border-slate-700 pb-2">{t('config')}</h3>
                 
-                {/* API Key Section */}
-                <div className="mb-4">
-                  <label className="block text-xs text-blue-400 font-bold mb-1 uppercase">
-                     <i className="fa-solid fa-robot mr-1"></i> {t('apiKeyLabel')}
-                  </label>
-                  <input
-                    type="password"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    placeholder={t('apiKeyPlaceholder')}
-                    className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm focus:border-blue-500 focus:outline-none transition-colors mb-1"
-                  />
-                  <p className="text-[10px] text-slate-500">
-                    {t('apiKeyHelp')}
-                  </p>
-                </div>
-
-                <div className="pt-2 border-t border-slate-700">
+                <div className="pt-2">
                   <p className="text-[10px] text-slate-500 leading-tight">
                     <i className="fa-solid fa-cloud mr-1"></i>
                     {isConfigured ? t('dbConnected') : t('dbNotConfigured')}
