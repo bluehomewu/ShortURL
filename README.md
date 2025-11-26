@@ -12,12 +12,29 @@ View your app in AI Studio: https://ai.studio/apps/drive/1MWbgOzJLFrI_jsC2_Mkhzv
 
 **Prerequisites:**  Node.js
 
-
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+
+2. Create a `.env.local` file in the root directory (copy from `.env.local.example`):
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+3. Configure your environment variables in `.env.local`:
+   - `GEMINI_API_KEY`: Your Gemini API key for AI-powered slug generation
+   - `FIREBASE_API_KEY`: Your Firebase API key
+   - `FIREBASE_AUTH_DOMAIN`: Your Firebase auth domain
+   - `FIREBASE_PROJECT_ID`: Your Firebase project ID
+   - `FIREBASE_STORAGE_BUCKET`: Your Firebase storage bucket
+   - `FIREBASE_MESSAGING_SENDER_ID`: Your Firebase messaging sender ID
+   - `FIREBASE_APP_ID`: Your Firebase app ID
+
+4. Run the app:
+   ```bash
+   npm run dev
+   ```
 
 ## GitHub Pages Deployment
 
@@ -29,11 +46,23 @@ This app is automatically deployed to GitHub Pages when changes are pushed to th
 
 To enable GitHub Pages deployment for your repository:
 
-1. Go to your repository Settings
-2. Navigate to "Pages" in the sidebar
-3. Under "Build and deployment":
-   - Source: Select "GitHub Actions"
-4. Push changes to the `main` branch to trigger automatic deployment
+1. **Configure GitHub Secrets:**
+   - Go to your repository Settings → Secrets and variables → Actions
+   - Add the following secrets (Repository secrets):
+     - `FIREBASE_API_KEY`
+     - `FIREBASE_AUTH_DOMAIN`
+     - `FIREBASE_PROJECT_ID`
+     - `FIREBASE_STORAGE_BUCKET`
+     - `FIREBASE_MESSAGING_SENDER_ID`
+     - `FIREBASE_APP_ID`
+
+2. **Enable GitHub Pages:**
+   - Go to repository Settings → Pages
+   - Under "Build and deployment":
+     - Source: Select "GitHub Actions"
+
+3. **Deploy:**
+   - Push changes to the `main` branch to trigger automatic deployment
 
 ### Manual Build
 
