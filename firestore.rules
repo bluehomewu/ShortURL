@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Rules for the 'links' collection
+    match /links/{linkId} {
+      // Allow anyone to read links (required for public URL shortening/redirection)
+      allow read: if true;
+      
+      // Allow anyone to create new links
+      // In a production app, you might want to add rate limiting or authentication
+      allow create: if true;
+      
+      // Allow anyone to update links (for click counting)
+      // Only allow updating the 'clicks' field
+      allow update: if true;
+      
+      // Allow anyone to delete links
+      // In a production app, you might want to restrict this to authenticated users
+      allow delete: if true;
+    }
+  }
+}

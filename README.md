@@ -31,7 +31,41 @@ View your app in AI Studio: https://ai.studio/apps/drive/1MWbgOzJLFrI_jsC2_Mkhzv
    - `FIREBASE_MESSAGING_SENDER_ID`: Your Firebase messaging sender ID
    - `FIREBASE_APP_ID`: Your Firebase app ID
 
-4. Run the app:
+4. **Configure Firebase Firestore Security Rules:**
+   
+   For the URL shortener to work properly (especially in incognito/private browsing mode), you need to deploy the Firestore security rules to allow public read access:
+   
+   a. Install Firebase CLI if you haven't already:
+   ```bash
+   npm install -g firebase-tools
+   ```
+   
+   b. Login to Firebase:
+   ```bash
+   firebase login
+   ```
+   
+   c. Initialize Firebase in your project (if not already done):
+   ```bash
+   firebase init firestore
+   ```
+   Select your Firebase project when prompted, and use the existing `firestore.rules` file.
+   
+   d. Deploy the security rules:
+   ```bash
+   firebase deploy --only firestore:rules
+   ```
+   
+   **Alternative method (via Firebase Console):**
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Select your project
+   - Navigate to Firestore Database → Rules
+   - Copy the content from `firestore.rules` file in this repository
+   - Paste it into the rules editor and publish
+   
+   **Note:** The security rules allow public read access to the `links` collection, which is necessary for anyone to use shortened URLs without authentication.
+
+5. Run the app:
    ```bash
    npm run dev
    ```
@@ -80,3 +114,33 @@ To build with a custom base path, set the `BASE_PATH` environment variable:
 ```bash
 BASE_PATH=/my-custom-path/ npm run build
 ```
+
+## Troubleshooting
+
+### Short URLs return 404 in incognito/private browsing mode
+
+**Problem:** Short URLs work in your regular browser but return 404 errors when accessed in incognito/private browsing mode or by other users.
+
+**Cause:** Firebase Firestore security rules are blocking public read access to the `links` collection.
+
+**Solution:** Deploy the `firestore.rules` file to your Firebase project:
+
+1. Make sure the `firestore.rules` file exists in your project root (it should contain rules allowing public read access)
+
+2. Deploy the rules using Firebase CLI:
+   ```bash
+   firebase deploy --only firestore:rules
+   ```
+
+3. Or update rules via Firebase Console:
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Select your project
+   - Navigate to Firestore Database → Rules
+   - Ensure the rules allow public read access for the `links` collection:
+     ```
+     allow read: if true;
+     ```
+
+4. Test the short URL again in incognito mode
+
+**Important:** The URL shortener requires public read access to work correctly, as shortened URLs need to be accessible by anyone without authentication.
