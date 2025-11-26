@@ -49,6 +49,7 @@ To enable GitHub Pages deployment for your repository:
 1. **Configure GitHub Secrets:**
    - Go to your repository Settings → Secrets and variables → Actions
    - Add the following secrets (Repository secrets):
+     - `GEMINI_API_KEY` (for AI-powered slug generation)
      - `FIREBASE_API_KEY`
      - `FIREBASE_AUTH_DOMAIN`
      - `FIREBASE_PROJECT_ID`

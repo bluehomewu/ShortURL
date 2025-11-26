@@ -13,6 +13,7 @@ export const firebaseConfig: FirebaseConfig = {
 };
 
 // Check if Firebase is configured (all required fields are present)
+// Note: storageBucket and messagingSenderId are optional for basic Firestore functionality
 export const isConfigured = !!(
   firebaseConfig.apiKey && 
   firebaseConfig.projectId && 
