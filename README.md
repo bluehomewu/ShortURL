@@ -1,119 +1,103 @@
-# 執行並部署您的 AI Studio 應用程式
+# ShortURL - AI 短網址產生器
 
-此專案包含在本機執行應用程式所需的所有內容。
+使用 Gemini AI 智慧生成短網址的服務，部署於 GitHub Pages。
 
-在 AI Studio 中檢視您的應用程式：https://ai.studio/apps/drive/1MWbgOzJLFrI_jsC2_MkhzvZ695sejH71
+🔗 **線上版本：** https://bluehomewu.github.io/ShortURL/
 
-## 本機執行
+## 功能特色
 
-**前置需求：** Node.js
+- 🤖 AI 智慧生成好記的短網址程式碼
+- 🔥 Firebase Firestore 資料儲存
+- 📊 點選次數統計
+- 🚀 GitHub Pages 自動部署
 
-1. 安裝相依套件：
-   ```bash
-   npm install
-   ```
+## 快速開始：部署到 GitHub Pages
 
-2. 在根目錄建立 `.env.local` 檔案（從 `.env.local.example` 複製）：
-   ```bash
-   cp .env.local.example .env.local
-   ```
+### 步驟 1：Fork 此專案
 
-3. 在 `.env.local` 中設定您的環境變數：
-   - `GEMINI_API_KEY`：您的 Gemini API 金鑰（用於 AI 生成短網址）
-   - `FIREBASE_API_KEY`：您的 Firebase API 金鑰
-   - `FIREBASE_AUTH_DOMAIN`：您的 Firebase 驗證網域
-   - `FIREBASE_PROJECT_ID`：您的 Firebase 專案 ID
-   - `FIREBASE_STORAGE_BUCKET`：您的 Firebase 儲存空間
-   - `FIREBASE_MESSAGING_SENDER_ID`：您的 Firebase 訊息傳送者 ID
-   - `FIREBASE_APP_ID`：您的 Firebase 應用程式 ID
+點選右上角的 **Fork** 按鈕，將此專案複製到您的 GitHub 帳戶。
 
-4. **設定 Firebase Firestore 安全規則：**
-   
-   為了讓短網址服務正常運作（特別是在無痕/隱私瀏覽模式下），您需要部署 Firestore 安全規則以允許公開讀取存取：
-   
-   a. 安裝 Firebase CLI（如果尚未安裝，或使用 npx 無需安裝直接執行）：
-   ```bash
-   npm install -g firebase-tools
-   # 或使用 npx 無需全域安裝：
-   # npx firebase-tools <指令>
-   ```
-   
-   b. 登入 Firebase：
-   ```bash
-   firebase login
-   ```
-   
-   c. 在您的專案中初始化 Firebase（如果尚未完成）：
-   ```bash
-   firebase init firestore
-   ```
-   出現提示時選擇您的 Firebase 專案，並使用現有的 `firestore.rules` 檔案。
-   
-   d. 部署安全規則：
-   ```bash
-   firebase deploy --only firestore:rules
-   ```
-   
-   **替代方法（透過 Firebase 控制檯）：**
-   - 前往 [Firebase 控制檯](https://console.firebase.google.com/)
-   - 選擇您的專案
-   - 導航至 Firestore Database → Rules
-   - 複製此儲存庫中 `firestore.rules` 檔案的內容
-   - 貼上至規則編輯器並發布
-   
-   **重要安全注意事項：**
-   - 安全規則允許對 `links` 集合進行公開讀取存取，這是讓任何人無需驗證即可使用短網址的必要條件
-   - 預設情況下，刪除操作需要驗證。如果您需要刪除連結，有兩個選項：
-     1. **（推薦）** 在應用程式中實作 Firebase 驗證
-     2. **（較不安全）** 修改 `firestore.rules` 檔案以允許公開刪除存取（請參閱檔案中的註解）
-   - 更新操作僅限於 `clicks` 欄位，以防止未經授權的修改
+### 步驟 2：建立 Firebase 專案
 
-5. 執行應用程式：
-   ```bash
-   npm run dev
-   ```
+1. 前往 [Firebase 控制檯](https://console.firebase.google.com/)
+2. 點選「新增專案」建立新專案
+3. 在專案設定中，新增「網頁應用程式」
+4. 複製 Firebase 設定資訊（稍後使用）
 
-## GitHub Pages 部署
+### 步驟 3：設定 Firestore 資料庫
 
-當變更推送到 `main` 分支時，此應用程式會自動部署到 GitHub Pages。
+1. 在 Firebase 控制檯，前往「Firestore Database」
+2. 點選「建立資料庫」
+3. 前往「Rules」頁籤，將這個專案中的 `firestore.rules` 檔案內容貼上並發布
 
-**部署網址：** https://bluehomewu.github.io/ShortURL/
+### 步驟 4：取得 Gemini API 金鑰
 
-### 設定說明
+1. 前往 [Google AI Studio](https://aistudio.google.com/)
+2. 點選「Get API key」取得 API 金鑰
 
-若要為您的儲存庫啟用 GitHub Pages 部署：
+### 步驟 5：設定 GitHub Secrets
 
-1. **設定 GitHub Secrets：**
-   - 前往您的儲存庫 Settings → Secrets and variables → Actions
-   - 新增以下 secrets（儲存庫金鑰）：
-     - `GEMINI_API_KEY`（用於 AI 生成短網址）
-     - `FIREBASE_API_KEY`
-     - `FIREBASE_AUTH_DOMAIN`
-     - `FIREBASE_PROJECT_ID`
-     - `FIREBASE_STORAGE_BUCKET`
-     - `FIREBASE_MESSAGING_SENDER_ID`
-     - `FIREBASE_APP_ID`
+在您 Fork 的儲存庫中：
 
-2. **啟用 GitHub Pages：**
-   - 前往儲存庫 Settings → Pages
-   - 在「Build and deployment」下：
-     - Source：選擇「GitHub Actions」
+1. 前往 **Settings** → **Secrets and variables** → **Actions**
+2. 點選 **New repository secret**，新增以下金鑰：
 
-3. **部署：**
-   - 推送變更到 `main` 分支以觸發自動部署
+| Secret 名稱 | 說明 |
+|------------|------|
+| `GEMINI_API_KEY` | Google AI Studio 的 API 金鑰 |
+| `FIREBASE_API_KEY` | Firebase 設定中的 apiKey |
+| `FIREBASE_AUTH_DOMAIN` | Firebase 設定中的 authDomain |
+| `FIREBASE_PROJECT_ID` | Firebase 設定中的 projectId |
+| `FIREBASE_STORAGE_BUCKET` | Firebase 設定中的 storageBucket |
+| `FIREBASE_MESSAGING_SENDER_ID` | Firebase 設定中的 messagingSenderId |
+| `FIREBASE_APP_ID` | Firebase 設定中的 appId |
 
-### 手動建置
+### 步驟 6：啟用 GitHub Pages
 
-在本機建置專案：
+1. 前往儲存庫 **Settings** → **Pages**
+2. 在「Build and deployment」區塊：
+   - **Source**：選擇「**GitHub Actions**」
 
-```bash
-npm run build
+### 步驟 7：觸發部署
+
+推送任何變更到 `main` 分支，或手動執行 Actions：
+
+1. 前往儲存庫的 **Actions** 頁籤
+2. 選擇「Deploy to GitHub Pages」工作流程
+3. 點選「Run workflow」
+
+部署完成後，您的短網址服務將在以下網址上線：
+```
+https://<您的使用者名稱>.github.io/ShortURL/
 ```
 
-建置後的檔案將位於 `dist` 目錄中。
+## 本機開發
 
-若要使用自訂基礎路徑建置，請設定 `BASE_PATH` 環境變數：
+如需在本機執行開發：
 
 ```bash
-BASE_PATH=/my-custom-path/ npm run build
+# 安裝相依套件
+npm install
+
+# 複製環境變數範本
+cp .env.local.example .env.local
+
+# 編輯 .env.local 填入您的 API 金鑰
+
+# 啟動開發伺服器
+npm run dev
 ```
+
+開發伺服器將在 http://localhost:3000 啟動。
+
+## 技術架構
+
+- **前端框架**：React 19 + TypeScript
+- **建置工具**：Vite
+- **AI 服務**：Google Gemini API
+- **資料庫**：Firebase Firestore
+- **部署平臺**：GitHub Pages
+
+## 授權
+
+MIT License
