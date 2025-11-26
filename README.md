@@ -18,3 +18,29 @@ View your app in AI Studio: https://ai.studio/apps/drive/1MWbgOzJLFrI_jsC2_Mkhzv
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## GitHub Pages Deployment
+
+This app is automatically deployed to GitHub Pages when changes are pushed to the `main` branch.
+
+**Deployment URL:** https://bluehomewu.github.io/ShortURL/
+
+### Setup Instructions
+
+To enable GitHub Pages deployment for your repository:
+
+1. Go to your repository Settings
+2. Navigate to "Pages" in the sidebar
+3. Under "Build and deployment":
+   - Source: Select "GitHub Actions"
+4. Push changes to the `main` branch to trigger automatic deployment
+
+### Manual Build
+
+To build the project locally:
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist` directory.
