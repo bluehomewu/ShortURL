@@ -153,7 +153,7 @@ If your Firebase rules are already open (`allow read, write: if true;`), the iss
    ```
 
 3. **Debug the deployed build:**
-   - Open your deployed app: https://bluehomewu.github.io/shortURL/
+   - Open your deployed app: https://bluehomewu.github.io/ShortURL/
    - Open browser DevTools (F12) → Console tab
    - Look for errors like:
      - `"Firebase has not been configured in firebaseConfig.ts"`
@@ -165,7 +165,15 @@ If your Firebase rules are already open (`allow read, write: if true;`), the iss
    - Check the Network tab when accessing a short URL
    - Look for Firestore API calls - if there are none, Firebase isn't initialized
 
-#### 2. Firebase Security Rules (Less Common)
+#### 2. URL Case Sensitivity
+
+**Important:** GitHub Pages URLs are **case-sensitive**. Always use the correct case:
+- ✅ Correct: `https://bluehomewu.github.io/ShortURL/#/yr1uty`
+- ❌ Wrong: `https://bluehomewu.github.io/shortURL/#/yr1uty`
+
+Note the capital "S" and "U" in "ShortURL".
+
+#### 3. Firebase Security Rules (Less Common)
 
 If your Firebase rules are restrictive, you may need to deploy updated rules:
 
@@ -181,7 +189,7 @@ If your Firebase rules are restrictive, you may need to deploy updated rules:
 
 **Quick Test:**
 - Open incognito mode
-- Navigate to your app: https://bluehomewu.github.io/shortURL/
+- Navigate to your app: https://bluehomewu.github.io/ShortURL/
 - Open DevTools Console (F12)
 - Check for Firebase initialization errors
 - Try to create a short link and observe any error messages

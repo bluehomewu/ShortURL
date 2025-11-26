@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;URL='https://bluehomewu.github.io/ShortURL/'">
+  <script>
+    // Redirect to the main app preserving the hash for client-side routing
+    sessionStorage.redirect = location.href;
+    location.replace(location.pathname.split('/').slice(0, 2).join('/') + '/' + (location.hash || '#/'));
+  </script>
+  <title>Redirecting...</title>
+</head>
+<body>
+  <p>Redirecting to <a href="https://bluehomewu.github.io/ShortURL/">ShortURL</a>...</p>
+</body>
+</html>
