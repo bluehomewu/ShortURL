@@ -20,7 +20,7 @@ service cloud.firestore {
       allow delete: if request.auth != null;
       
       // ALTERNATIVE (Less Secure - Use with Caution):
-      // If you want to allow anyone to delete links, replace the line above with:
+      // If you want to allow anyone to delete links, replace line 20 above with:
       // allow delete: if true;
       // Warning: This allows anyone to delete any shortened URL
       // Only use this if the app is for personal use in a controlled environment

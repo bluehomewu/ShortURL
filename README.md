@@ -35,9 +35,11 @@ View your app in AI Studio: https://ai.studio/apps/drive/1MWbgOzJLFrI_jsC2_Mkhzv
    
    For the URL shortener to work properly (especially in incognito/private browsing mode), you need to deploy the Firestore security rules to allow public read access:
    
-   a. Install Firebase CLI if you haven't already:
+   a. Install Firebase CLI if you haven't already (or use npx to run without installing):
    ```bash
    npm install -g firebase-tools
+   # Or use npx without installing globally:
+   # npx firebase-tools <command>
    ```
    
    b. Login to Firebase:
@@ -143,7 +145,9 @@ BASE_PATH=/my-custom-path/ npm run build
    - Navigate to Firestore Database → Rules
    - Ensure the rules allow public read access for the `links` collection:
      ```
-     allow read: if true;
+     match /links/{linkId} {
+       allow read: if true;
+     }
      ```
 
 4. Test the short URL again in incognito mode
