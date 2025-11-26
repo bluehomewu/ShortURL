@@ -44,3 +44,9 @@ npm run build
 ```
 
 The built files will be in the `dist` directory.
+
+To build with a custom base path, set the `BASE_PATH` environment variable:
+
+```bash
+BASE_PATH=/my-custom-path/ npm run build
+```

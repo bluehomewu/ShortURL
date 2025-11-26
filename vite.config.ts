@@ -4,8 +4,10 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
+    // Use BASE_PATH env variable or default to '/ShortURL/' for GitHub Pages
+    const base = env.BASE_PATH || '/ShortURL/';
     return {
-      base: '/ShortURL/',
+      base,
       server: {
         port: 3000,
         host: '0.0.0.0',
