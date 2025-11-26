@@ -128,28 +128,60 @@ BASE_PATH=/my-custom-path/ npm run build
 
 **Problem:** Short URLs work in your regular browser but return 404 errors when accessed in incognito/private browsing mode or by other users.
 
-**Cause:** Firebase Firestore security rules are blocking public read access to the `links` collection.
+**Possible Causes and Solutions:**
 
-**Solution:** Deploy the `firestore.rules` file to your Firebase project:
+#### 1. GitHub Secrets Not Configured (Most Common)
 
-1. Make sure the `firestore.rules` file exists in your project root (it should contain rules allowing public read access)
+If your Firebase rules are already open (`allow read, write: if true;`), the issue is likely that Firebase credentials are missing from the deployed build.
 
-2. Deploy the rules using Firebase CLI:
+**Check and fix:**
+
+1. Verify that ALL Firebase secrets are set in your GitHub repository:
+   - Go to your repository → Settings → Secrets and variables → Actions
+   - Ensure these secrets exist with correct values from your [Firebase Console](https://console.firebase.google.com/):
+     - `FIREBASE_API_KEY`
+     - `FIREBASE_AUTH_DOMAIN`
+     - `FIREBASE_PROJECT_ID`
+     - `FIREBASE_STORAGE_BUCKET`
+     - `FIREBASE_MESSAGING_SENDER_ID`
+     - `FIREBASE_APP_ID`
+
+2. After adding/updating secrets, trigger a new deployment:
+   ```bash
+   git commit --allow-empty -m "Trigger rebuild with updated secrets"
+   git push origin main
+   ```
+
+3. **Debug the deployed build:**
+   - Open your deployed app: https://bluehomewu.github.io/shortURL/
+   - Open browser DevTools (F12) → Console tab
+   - Look for errors like:
+     - `"Firebase has not been configured in firebaseConfig.ts"`
+     - `"Database not configured"`
+   - If you see these errors, your secrets are not properly set in GitHub
+
+4. **Verify Firebase config in the built app:**
+   - In DevTools Console, type: `window.location.href`
+   - Check the Network tab when accessing a short URL
+   - Look for Firestore API calls - if there are none, Firebase isn't initialized
+
+#### 2. Firebase Security Rules (Less Common)
+
+If your Firebase rules are restrictive, you may need to deploy updated rules:
+
+1. Deploy the `firestore.rules` file using Firebase CLI:
    ```bash
    firebase deploy --only firestore:rules
    ```
 
-3. Or update rules via Firebase Console:
+2. Or update rules via Firebase Console:
    - Go to [Firebase Console](https://console.firebase.google.com/)
-   - Select your project
-   - Navigate to Firestore Database → Rules
-   - Ensure the rules allow public read access for the `links` collection:
-     ```
-     match /links/{linkId} {
-       allow read: if true;
-     }
-     ```
+   - Select your project → Firestore Database → Rules
+   - Ensure rules allow public read access
 
-4. Test the short URL again in incognito mode
-
-**Important:** The URL shortener requires public read access to work correctly, as shortened URLs need to be accessible by anyone without authentication.
+**Quick Test:**
+- Open incognito mode
+- Navigate to your app: https://bluehomewu.github.io/shortURL/
+- Open DevTools Console (F12)
+- Check for Firebase initialization errors
+- Try to create a short link and observe any error messages

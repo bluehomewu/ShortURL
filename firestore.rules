@@ -1,29 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Rules for the 'links' collection
-    match /links/{linkId} {
-      // Allow anyone to read links (required for public URL shortening/redirection)
-      allow read: if true;
-      
-      // Allow anyone to create new links
-      // Note: In production, consider adding rate limiting or authentication
-      allow create: if true;
-      
-      // Allow anyone to update links, but only the 'clicks' field
-      // This is necessary for incrementing click counts when URLs are accessed
-      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clicks']);
-      
-      // RECOMMENDED (Default - More Secure):
-      // Restrict delete access to authenticated users only
-      // This prevents malicious users from deleting shortened URLs
-      allow delete: if request.auth != null;
-      
-      // ALTERNATIVE (Less Secure - Use with Caution):
-      // If you want to allow anyone to delete links, replace line 20 above with:
-      // allow delete: if true;
-      // Warning: This allows anyone to delete any shortened URL
-      // Only use this if the app is for personal use in a controlled environment
+    // Allow read and write access to all documents
+    // This matches your current Firebase rules configuration
+    match /{document=**} {
+      allow read, write: if true;
     }
   }
 }
