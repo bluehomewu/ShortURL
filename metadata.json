@@ -1,0 +1,5 @@
+{
+  "name": "Gemini Link Shortener",
+  "description": "A smart URL shortener hosted on GitHub Pages that uses Gemini AI to generate creative, memorable slugs. Features a local 'backend' simulation for persistence.",
+  "requestFramePermissions": []
+}
