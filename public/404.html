@@ -2,15 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0;URL='https://bluehomewu.github.io/ShortURL/'">
   <script>
-    // Redirect to the main app preserving the hash for client-side routing
+    // SPA Redirect Script for GitHub Pages
+    // This handles 404s by redirecting to the main app while preserving the hash route
+    // Example: /ShortURL/unknown -> /ShortURL/#/unknown
+    
+    // Store the original URL for potential use by the app
     sessionStorage.redirect = location.href;
-    location.replace(location.pathname.split('/').slice(0, 2).join('/') + '/' + (location.hash || '#/'));
+    
+    // Get the base path (e.g., '/ShortURL')
+    var basePath = location.pathname.split('/').slice(0, 2).join('/');
+    
+    // Preserve any hash route or default to root
+    var hashRoute = location.hash || '#/';
+    
+    // Redirect to the base path with the hash route
+    location.replace(basePath + '/' + hashRoute);
   </script>
   <title>Redirecting...</title>
 </head>
 <body>
-  <p>Redirecting to <a href="https://bluehomewu.github.io/ShortURL/">ShortURL</a>...</p>
+  <p>Redirecting...</p>
 </body>
 </html>
