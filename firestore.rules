@@ -14,16 +14,16 @@ service cloud.firestore {
       // This is necessary for incrementing click counts when URLs are accessed
       allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clicks']);
       
-      // OPTION 1 (RECOMMENDED - More Secure):
+      // RECOMMENDED (Default - More Secure):
       // Restrict delete access to authenticated users only
-      // Uncomment this line and comment out the line below if you want to add authentication
-      // allow delete: if request.auth != null;
+      // This prevents malicious users from deleting shortened URLs
+      allow delete: if request.auth != null;
       
-      // OPTION 2 (Current - Less Secure):
-      // Allow anyone to delete links
+      // ALTERNATIVE (Less Secure - Use with Caution):
+      // If you want to allow anyone to delete links, replace the line above with:
+      // allow delete: if true;
       // Warning: This allows anyone to delete any shortened URL
-      // Only use this if the app is for personal use and not publicly exposed
-      allow delete: if true;
+      // Only use this if the app is for personal use in a controlled environment
     }
   }
 }

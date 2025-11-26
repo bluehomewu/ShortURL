@@ -63,7 +63,12 @@ View your app in AI Studio: https://ai.studio/apps/drive/1MWbgOzJLFrI_jsC2_Mkhzv
    - Copy the content from `firestore.rules` file in this repository
    - Paste it into the rules editor and publish
    
-   **Note:** The security rules allow public read access to the `links` collection, which is necessary for anyone to use shortened URLs without authentication.
+   **Important Security Notes:**
+   - The security rules allow public read access to the `links` collection, which is necessary for anyone to use shortened URLs without authentication
+   - By default, delete operations require authentication. If you need to delete links, you have two options:
+     1. **(Recommended)** Implement Firebase Authentication in the app
+     2. **(Less Secure)** Modify the `firestore.rules` file to allow public delete access (see comments in the file)
+   - Update operations are restricted to only the `clicks` field to prevent unauthorized modifications
 
 5. Run the app:
    ```bash
